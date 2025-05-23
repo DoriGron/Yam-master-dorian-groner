@@ -10,8 +10,8 @@ Base de données : MongoDB
 
 Architecture
 
-/app          Code de l'application mobile (React Native)
-/backend      Serveur backend (Node.js + Express)
+/app          Code de l'application 
+/backend      Serveur backend 
 
 Installation
 
