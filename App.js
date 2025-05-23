@@ -1,0 +1,77 @@
+// ./App.js
+
+import React from "react";
+import { LogBox, ImageBackground, StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from "./app/screens/home.screen.js";
+import { SocketContext, socket } from "./app/contexts/socket.context";
+import OnlineGameScreen from "./app/screens/online-game.screen";
+import VsBotGameScreen from "./app/screens/vs-bot-game.screen";
+import { COLOR } from "./app/constants/color";
+import { IMAGE } from "./app/constants/asset.js";
+import Header from "./app/components/Header";
+import { useFonts } from "expo-font";
+
+const Stack = createStackNavigator();
+LogBox.ignoreAllLogs(true);
+
+function App() {
+  const [fontsLoaded] = useFonts({
+    "Pricedown Bl": require("./app/assets/fonts/Pricedown Bl.otf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  return (
+    <SocketContext.Provider value={socket}>
+      <ImageBackground
+        source={IMAGE.BACKGROUND_TEXTURE}
+        resizeMode="cover"
+        style={styles.background}
+      >
+        <NavigationContainer
+          theme={{
+            colors: {
+              text: COLOR.WHITE,
+              background: "transparent",
+            },
+          }}
+        >
+          <Stack.Navigator
+            initialRouteName="Yam Master"
+            screenOptions={{
+              header: ({ route }) => <Header title={route.name} />,
+            }}
+          >
+            <Stack.Group>
+              <Stack.Screen
+                name="Yam Master"
+                component={HomeScreen}
+              />
+              <Stack.Screen
+                name="Jouer en ligne"
+                component={OnlineGameScreen}
+              />
+              <Stack.Screen
+                name="Jouer contre le bot"
+                component={VsBotGameScreen}
+              />
+            </Stack.Group>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ImageBackground>
+    </SocketContext.Provider>
+  );
+}
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: "100%",
+  },
+});
+
+export default App;
